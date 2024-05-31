@@ -1,0 +1,331 @@
+<title>boredchat</title>
+<script>
+	$=(x,y)=>(y??document).querySelector(x);
+	$$=(x,y)=>(y??document).querySelectorAll(x);
+	/*onerror=alert;*/
+	onkeypress=x=>{if(x.key=='~'&&x.ctrlKey){pc.onicecandidate('')}};
+</script>
+<style>
+  body {
+		margin: 10;
+    background: #666;
+    font-family: monospace;
+    font-size: 20px;
+    user-select: none;
+		color: white;
+    grid-template-rows: calc(100vh - 25px) 0px;
+		grid-template-columns: calc(100vw - 70px) 35px;
+		display: grid;
+		grid-template-areas:
+				'top top'
+				'left right';
+		gap: 15px;
+		overflow: clip;
+  }
+  #in {
+  	all: unset;
+    border: 1px solid #444;
+    height: 25px;
+    width: calc(100vw - 80px);
+		padding: 5px;
+    grid-area: left;
+		display: none;
+  }
+  #in::placeholder {
+  	color: #aaa;
+  }
+  #send {
+  	all: unset;
+    border: 1px solid #444;
+    line-height: 20px;
+    height: 35px;
+    width: 35px;
+    text-align: center;
+    grid-area: right;
+    cursor: pointer;
+		font-size: 30px;
+		display: none;
+  }
+  #send:active {
+  	background: #222;
+    color: #fff;
+    grid-area: right;
+  }
+  #msgs {
+  	overflow: auto;
+    border: 1px solid #444;
+    grid-area: top;
+    user-select: text;
+  }
+	.msg {
+		
+	}
+	.a { color: red;  }
+	.b { color: blue; }
+	.text { white-space: pre }
+	
+	.template { display: none; }
+
+	#load { white-space: pre; }
+</style>
+<div id="msgs">
+	<div id="load">...</div>
+</div>
+<input id="in" 
+	placeholder="Type message here..." 
+	onkeypress="if(event.key=='Enter')$('#send').onclick()" 
+	autocomplete="off">
+<button id="send" onclick="if($('#in').value!=''){sendmsg($('#in').value);$('#in').value=''}">&#x1f879;</button>
+
+<script defer>
+	owner = false;
+	var config = {
+		iceServers: [
+		{ urls: 'stun:stun2.l.google.com:19302' },
+		{ urls: 'stun:stun3.l.google.com:19302' },
+		{ urls: 'stun:stun4.l.google.com:19302' },
+		/*{ urls: "stun:stun.relay.metered.ca:80" },
+		{
+			urls: "turn:global.relay.metered.ca:80",
+			username: "9307b18ee5c9ce861bbb23b9",
+			credential: "1JkiCihJuAbeqEGN",
+		},
+		{
+			urls: "turn:global.relay.metered.ca:80?transport=tcp",
+			username: "9307b18ee5c9ce861bbb23b9",
+			credential: "1JkiCihJuAbeqEGN",
+		},
+		{
+			urls: "turn:global.relay.metered.ca:443",
+			username: "9307b18ee5c9ce861bbb23b9",
+			credential: "1JkiCihJuAbeqEGN",
+		},
+		{
+			urls: "turns:global.relay.metered.ca:443?transport=tcp",
+			username: "9307b18ee5c9ce861bbb23b9",
+			credential: "1JkiCihJuAbeqEGN",
+		},*/
+	  ],
+	};
+
+	var pc = new RTCPeerConnection(config);
+	var dc = pc.createDataChannel("webrtc");
+	var ws = new WebSocket(/*'ws://localhost:8080/'*/'ws://signal-env.eba-zipafnp2.us-east-2.elasticbeanstalk.com');
+	var errors = {
+		'i0'  :['Unkown internal error', false],
+		'w3'  :['Credentials incorrect', false],
+		'w3'  :['App does not exist (you should not see this)', false],
+		'w2'  :['Other user disconnected during connection phase', true],
+		'w1'  :['2 People are already connecting, Try again later', false],
+		'w0'  :['Unkown connecting error / Internal server error', false],
+		'w-2' :['Server reset called', false],
+		'w-1' :['Connection Failed / Disconnected', true]
+	};
+	
+	var error;
+	
+	ready=()=>{
+		$('#in').style.display   = 'inline-block';
+		$('#send').style.display = 'inline-block';
+		$('body').style.gridTemplateRows = 'calc(100vh - 70px) 35px';
+		playsnd('join');
+	}	
+
+	function doerror(x, y){
+		playsnd('err');
+		var e = errors[x + y];
+		error = e[0];
+		return e[1];
+	}
+	
+	mkmsg=(x,y)=>{
+		if($('#load'))
+			$('#load').remove();
+		var newmsg = $('.msg.template').cloneNode(true);
+		newmsg.classList.remove('template');
+		
+		$('.user', newmsg).classList.add('ab'[y]);
+		$('.user', newmsg).innerText = 'AB'[y] + ':';
+		$('.text', newmsg).innerText = x;
+
+		$('#msgs').appendChild(newmsg);
+	}
+
+	sendmsg=x=>{
+		mkmsg(x, 0);
+		sendDC(x);
+	}
+
+	sendDC=x=>{
+		dc.send(JSON.stringify({type: 'message',value: x}))
+	}
+
+	ondc=x=>{
+		var y = JSON.parse(x);
+		switch(y.type){
+			case 'message':
+				mkmsg(y.value, 1);
+				playsnd('ping');
+				break;
+		}
+	}
+
+	discon=()=>{
+		$('#in').style.display   = 'none';
+		$('#send').style.display = 'none';
+		$('body').style.gridTemplateRows = 'calc(100vh - 25px) 0px';
+		$('#discon').classList.remove('template');
+		$('#msgs').appendChild($('#discon'));
+		playsnd('err');
+	}
+
+	setupdc=()=>{
+		if(dc.id != null){
+			dc.onmessage = e => ondc(e.data);
+			dc.onopen = () => setLoad();
+			dc.onclose = e => discon();
+		}
+	}
+	
+	setupdc()
+	var loadtext = [
+		'Waiting...',
+		'Connecting to server...',
+		'Waiting for other user...',
+		'Exchanging SDPs',
+		'Gathering ICE candidates...',
+		'Connecting data channel...',
+		'Done!\nType anything to start chatting!'
+	];
+	var load = 0;
+	var loadtime = 0;
+
+	setLoad = x => {
+		if(!x){
+			load++;
+			loadtime = 0;
+		};
+		if(load >= loadtext.length-1){
+			load = loadtext.length-1;
+			clearInterval(setloadint);
+			ready();
+		}
+		loadtime = (loadtime + 1) % 4;
+		$('#load').innerText = 
+			'[' +
+			'='.repeat(load + (load>=loadtext.length?1:0)) + 
+			(load < loadtext.length - 1 ? (error ? 'x' : '/-\\|'[loadtime]) : '') + 
+			' '.repeat(Math.max(0,loadtext.length - load - 2)) + 
+			'] ' + 
+			loadtext[load] + (error ? '\nFailed: ' + error : '');
+	}
+	
+	setloadint = setInterval(setLoad, 500, true)
+
+	function wssend(type, value){
+		if(ws.OPEN){
+			var x = JSON.stringify({type, value})
+			ws.send(x);
+		}
+	}
+
+	pc.ondatachannel = e => {
+		if(owner){
+			dc = e.channel;
+		} 
+		setupdc()
+	}
+	
+	ws.onclose = function(x){
+		//if(x.reason != 1)doerror('w', -1);
+		clearInterval(ping);
+	}
+
+	ws.onmessage = function(x){
+		y = JSON.parse(x.data);
+		console.log(y)
+		switch(y.type){
+			case 'error':
+				if(doerror('w', y.value))
+					ws.close();
+				break;
+			case 'get':
+				if(y.value == 'offer'){
+					owner = true;
+					pc.createOffer().then(function(offer) {setLoad();
+						return pc.setLocalDescription(offer);
+					}).then(function() {
+						wssend('offer', pc.localDescription);
+					});
+				}
+				break;
+			case 'offer':
+				pc.setRemoteDescription(y.value).then(function() {setLoad();setLoad();
+					return pc.createAnswer();
+				}).then(function(answer) {
+					return pc.setLocalDescription(answer);
+				}).then(function() {
+					wssend('answer', pc.localDescription)
+				});
+				break;
+			case 'answer': setLoad();
+				pc.setRemoteDescription(y.value)
+				break;
+			case 'ice':
+				pc.addIceCandidate(new RTCIceCandidate(y.value));
+				break;
+			case 'done':
+				pc.addIceCandidate();
+				break;
+			case 'uinfo':
+				remoteUser = y.value;
+				break;
+		}
+	}
+	var iceCandidates = [];
+			
+	pc.onicecandidate = e => {
+		if(e.candidate){
+			iceCandidates.push(e.candidate);
+		}else{
+			iceCandidates.forEach(c=>{
+				wssend('ice', c);
+			});
+			setLoad();
+			wssend('done');
+		}
+	}
+
+	pc.oniceconnectionstatechange = function(event) {
+		if (pc.iceConnectionState === 'disconnected') {
+			console.log('ICE Connection failed. Attempting to restart ICE...');
+			pc.restartIce(); // Attempt to restart ICE
+		}
+		if (pc.iceConnectionState === "connected") {
+			setLoad();
+			console.log("Connection established!");
+			ws.close(1000, 1);
+		}
+	};
+
+	ws.onopen = () => {
+		setLoad();
+		ping = setInterval(wssend, 10000, 'ping');
+		wssend('conn', {'app':'e2pg', 'un':'a', 'pw':'b'});
+	}
+	
+	setLoad();
+	
+	function playsnd(x) {
+		var audio = new Audio(`https://cdn.jsdelivr.net/gh/geodebreaker/mystuff@main/boredchat/notifications/${x}.mp3`);
+		audio.play();
+	}
+</script>
+
+<div class="msg template">
+	<span class="user"></span>
+	<span class="text"></span>
+</div>
+<div id="discon" class="template">
+	<span class="text">--- DISCONNECTED ---</span>
+</div>

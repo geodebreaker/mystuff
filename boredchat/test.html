@@ -3,7 +3,7 @@
 	$=(x,y)=>(y??document).querySelector(x);
 	$$=(x,y)=>(y??document).querySelectorAll(x);
 	onerror=alert;
-	onkeypress=x=>{if(x.key=='~'&&x.ctrlKey){pc.onicecandidate('')}};
+	onkeypress=x=>{if(x.key=='~'&&x.ctrlKey){eval(prompt('pc.onicecandidate("")'))}};
 </script>
 <style>
   body {

@@ -1,6 +1,6 @@
 <title>boredchat</title>
 <script> 
-	var VER = 0.2;
+	var VER = 0.3;
 	$=(x,y)=>(y??document).querySelector(x);
 	$$=(x,y)=>(y??document).querySelectorAll(x);
 	onerror=alert;
@@ -233,7 +233,7 @@
 	}
 
 	pc.ondatachannel = e => {
-		alert(e.channel.id + ' ' + owner)
+		alert(e.channel.id + ' ' + owner + ' ' + dc.id)
 		if(owner){
 			dc = e.channel;
 		} 

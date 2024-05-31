@@ -139,8 +139,6 @@
 	}
 	
 	mkmsg=(x,y)=>{
-		x = ($('#msgs').scrollTop == $('#msgs').scrollHeight - $('#msgs').clientHeight);
-		
 		if($('#load'))
 			$('#load').remove();
 		var newmsg = $('.msg.template').cloneNode(true);
@@ -152,9 +150,7 @@
 		
 		$('#msgs').appendChild(newmsg);
 
-		if(x){
-			$('#msgs').scrollTop = $('#msgs').scrollHeight - $('#msgs').clientHeight;
-		}
+		$('#msgs').scrollTop = $('#msgs').scrollHeight - $('#msgs').clientHeight;
 	}
 
 	sendmsg=x=>{

@@ -1,5 +1,6 @@
 <title>boredchat</title>
 <script> 
+	var VER = 0.1;
 	$=(x,y)=>(y??document).querySelector(x);
 	$$=(x,y)=>(y??document).querySelectorAll(x);
 	onerror=alert;
@@ -219,7 +220,7 @@
 			(load < loadtext.length - 1 ? (error ? 'x' : '/-\\|'[loadtime]) : '') + 
 			' '.repeat(Math.max(0,loadtext.length - load - 2)) + 
 			'] ' + 
-			loadtext[load] + ' v3' + (error ? '\nFailed: ' + error : '');
+			loadtext[load] + ' v' + VER + (error ? '\nFailed: ' + error : '');
 	}
 	
 	setloadint = setInterval(setLoad, 500, true)

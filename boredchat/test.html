@@ -139,6 +139,8 @@
 	}
 	
 	mkmsg=(x,y)=>{
+		x = ($('#msgs').scrollTop == $('#msgs').scrollHeight - $('#msgs').clientHeight);
+		
 		if($('#load'))
 			$('#load').remove();
 		var newmsg = $('.msg.template').cloneNode(true);
@@ -147,8 +149,12 @@
 		$('.user', newmsg).classList.add('ab'[y]);
 		$('.user', newmsg).innerText = 'AB'[y] + ':';
 		$('.text', newmsg).innerText = x;
-
+		
 		$('#msgs').appendChild(newmsg);
+
+		if(x){
+			$('#msgs').scrollTop = $('#msgs').scrollHeight - $('#msgs').clientHeight;
+		}
 	}
 
 	sendmsg=x=>{

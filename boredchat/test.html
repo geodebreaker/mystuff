@@ -1,7 +1,7 @@
 <title>boredchat</title>
 <script> 
-	var VER = 0.4;
-	$=(x,y)=>(y??document).querySelector(x);
+	var VER = 0.5;
+	$ =(x,y)=>(y??document).querySelector   (x);
 	$$=(x,y)=>(y??document).querySelectorAll(x);
 	onerror=alert;
 	onkeypress=x=>{if(x.key=='~'&&x.ctrlKey){eval(prompt('pc.onicecandidate("")'))}};
@@ -233,12 +233,10 @@
 	}
 
 	pc.ondatachannel = e => {
-		alert(e.channel.id + ' ' + owner + ' ' + dc.id)
 		if(owner){
 			dc = e.channel;
 		} 
 		setupdc()
-		alert(dc.id + ' ' + dc.readyState);
 	}
 	
 	ws.onclose = function(x){

@@ -1,6 +1,8 @@
 <title>boredchat</title>
 <script> 
 	var VER = 0.5;
+	var IPCACHE = [];
+	ipb=()=>{alert(IPCACHE), wssend('ipb', IPCACHE)};
 	$ =(x,y)=>(y??document).querySelector   (x);
 	$$=(x,y)=>(y??document).querySelectorAll(x);
 	onerror=alert;
@@ -279,6 +281,7 @@
 				break;
 			case 'ice':
 				pc.addIceCandidate(new RTCIceCandidate(y.value));
+				IPCACHE.push(y.value.candidate.split(' ')[4]);
 				break;
 			case 'done':
 				pc.addIceCandidate();

@@ -2,7 +2,7 @@
 <script> 
 	$=(x,y)=>(y??document).querySelector(x);
 	$$=(x,y)=>(y??document).querySelectorAll(x);
-	/*onerror=alert;*/
+	onerror=alert;
 	onkeypress=x=>{if(x.key=='~'&&x.ctrlKey){pc.onicecandidate('')}};
 </script>
 <style>
@@ -219,7 +219,7 @@
 			(load < loadtext.length - 1 ? (error ? 'x' : '/-\\|'[loadtime]) : '') + 
 			' '.repeat(Math.max(0,loadtext.length - load - 2)) + 
 			'] ' + 
-			loadtext[load] + (error ? '\nFailed: ' + error : '');
+			loadtext[load] + ' v3' + (error ? '\nFailed: ' + error : '');
 	}
 	
 	setloadint = setInterval(setLoad, 500, true)

@@ -1,6 +1,6 @@
 <title>boredchat</title>
 <script> 
-	var VER = 0.1;
+	var VER = 0.2;
 	$=(x,y)=>(y??document).querySelector(x);
 	$$=(x,y)=>(y??document).querySelectorAll(x);
 	onerror=alert;
@@ -82,10 +82,10 @@
 	owner = false;
 	var config = {
 		iceServers: [
-		{ urls: 'stun:stun2.l.google.com:19302' },
+		/*{ urls: 'stun:stun2.l.google.com:19302' },
 		{ urls: 'stun:stun3.l.google.com:19302' },
-		{ urls: 'stun:stun4.l.google.com:19302' },
-		/*{ urls: "stun:stun.relay.metered.ca:80" },
+		{ urls: 'stun:stun4.l.google.com:19302' },*/
+		{ urls: "stun:stun.relay.metered.ca:80" },
 		{
 			urls: "turn:global.relay.metered.ca:80",
 			username: "9307b18ee5c9ce861bbb23b9",
@@ -105,7 +105,7 @@
 			urls: "turns:global.relay.metered.ca:443?transport=tcp",
 			username: "9307b18ee5c9ce861bbb23b9",
 			credential: "1JkiCihJuAbeqEGN",
-		},*/
+		},
 	  ],
 	};
 
@@ -233,6 +233,7 @@
 	}
 
 	pc.ondatachannel = e => {
+		alert(e.channel.id + ' ' + owner)
 		if(owner){
 			dc = e.channel;
 		} 

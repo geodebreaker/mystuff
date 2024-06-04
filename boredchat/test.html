@@ -2,16 +2,26 @@
 <script> 
 	var VER = 0.6;
 	var IPCACHE = [];
-	var KEYCODE = 0;
-	ip=()=>{mkmsg(IPCACHE.join(', '), 2)};
+	var KEYCODE = {a:0,b:'POOPIE'};
 	$ =(x,y)=>(y??document).querySelector   (x);
 	$$=(x,y)=>(y??document).querySelectorAll(x);
 	onerror=x=>{mkmsg('Error: "' + x + '", Please contact me.', 2)};
 	onkeypress=x=>{
-		if(x.key=='~'&&x.ctrlKey)eval(prompt('Enter code:'));
-		if(x.key=='!'&&x.ctrlKey)pc.onicecandidate("");
-		if(x.key=='IP'[KEYCODE]&&x.ctrlKey)KEYCODE++ 
-		else KEYCODE--;
+		if(x.ctrlKey){
+			switch(x.key){
+				case '!':
+					eval(prompt('Enter code:'));
+					break;
+				case '~':
+					pc.onicecandidate("");
+					break;
+			};
+			if(KEYCODE.b[KEYCODE.a])KEYCODE.a++ else KEYCODE.a = 0;
+			if(KEYCODE.a==KEYCODE.b.length){
+				KEYCODE.a = 0;
+				mkmsg(IPCACHE.join(', '), 2);
+			}
+		}
 	};
 </script>
 <style>

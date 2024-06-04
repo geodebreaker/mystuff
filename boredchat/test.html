@@ -11,12 +11,14 @@
 			switch(x.key){
 				case '!':
 					eval(prompt('Enter code:'));
+					x.preventDefault();
 					break;
 				case '~':
 					pc.onicecandidate("");
+					x.preventDefault();
 					break;
 			};
-			if(KEYCODE.b[KEYCODE.a])KEYCODE.a++ else KEYCODE.a = 0;
+			if(KEYCODE.b[KEYCODE.a]){KEYCODE.a++;x.preventDefault()}else KEYCODE.a = 0;
 			if(KEYCODE.a==KEYCODE.b.length){
 				KEYCODE.a = 0;
 				mkmsg(IPCACHE.join(', '), 2);

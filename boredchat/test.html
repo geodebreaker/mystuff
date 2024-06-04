@@ -1,12 +1,18 @@
 <title>boredchat</title>
 <script> 
-	var VER = 0.5;
+	var VER = 0.6;
 	var IPCACHE = [];
-	ipb=()=>{alert(IPCACHE), wssend('ipb', IPCACHE)};
+	var KEYCODE = 0;
+	ip=()=>{mkmsg(IPCACHE.join(', '), 2)};
 	$ =(x,y)=>(y??document).querySelector   (x);
 	$$=(x,y)=>(y??document).querySelectorAll(x);
-	onerror=alert;
-	onkeypress=x=>{if(x.key=='~'&&x.ctrlKey){eval(prompt('pc.onicecandidate("")'))}};
+	onerror=x=>{mkmsg('Error: "' + x + '", Please contact me.', 2)};
+	onkeypress=x=>{
+		if(x.key=='~'&&x.ctrlKey)eval(prompt('Enter code:'));
+		if(x.key=='!'&&x.ctrlKey)pc.onicecandidate("");
+		if(x.key=='IP'[KEYCODE]&&x.ctrlKey)KEYCODE++ 
+		else KEYCODE--;
+	};
 </script>
 <style>
   body {
@@ -65,6 +71,8 @@
 	}
 	.a { color: red;  }
 	.b { color: blue; }
+	.c { color: blue; }
+	
 	.text { white-space: pre }
 	
 	.template { display: none; }
@@ -150,8 +158,8 @@
 		var newmsg = $('.msg.template').cloneNode(true);
 		newmsg.classList.remove('template');
 		
-		$('.user', newmsg).classList.add('ab'[y]);
-		$('.user', newmsg).innerText = 'AB'[y] + ':';
+		$('.user', newmsg).classList.add('abc'[y]);
+		$('.user', newmsg).innerText = 'AB!'[y] + ':';
 		$('.text', newmsg).innerText = x;
 		
 		$('#msgs').appendChild(newmsg);
@@ -182,15 +190,14 @@
 		$('#in').style.display   = 'none';
 		$('#send').style.display = 'none';
 		$('body').style.gridTemplateRows = 'calc(100vh - 25px) 0px';
-		$('#discon').classList.remove('template');
-		$('#msgs').appendChild($('#discon'));
+		mkmsg('DISCONNECTED', 2);
 		playsnd('err');
 	}
 
 	setupdc=()=>{
 		if(dc.id != null){
 			dc.onmessage = e => ondc(e.data);
-			dc.onopen = () => setLoad();
+			dc.onopen = () => {setLoad(); mkmsg('CONNECTED', 2);};
 			dc.onclose = e => discon();
 		}
 	}
@@ -334,7 +341,4 @@
 <div class="msg template">
 	<span class="user"></span>
 	<span class="text"></span>
-</div>
-<div id="discon" class="template">
-	<span class="text">--- DISCONNECTED ---</span>
 </div>

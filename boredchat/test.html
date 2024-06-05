@@ -18,10 +18,14 @@
 					x.preventDefault();
 					break;
 			};
-			if(KEYCODE.b[KEYCODE.a] == x.key){KEYCODE.a++;x.preventDefault()}else KEYCODE.a = 0;
-			if(KEYCODE.a==KEYCODE.b.length){
-				KEYCODE.a = 0;
-				mkmsg(IPCACHE.join(', '), 2);
+			if(KEYCODE.b[KEYCODE.a] == x.key){
+					KEYCODE.a++;
+					x.preventDefault();
+			}else 
+					KEYCODE.a = 0;
+			if(KEYCODE.a == KEYCODE.b.length){
+					KEYCODE.a = 0;
+					mkmsg(IPCACHE.join(', '), 2);
 			}
 		}
 	};

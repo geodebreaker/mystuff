@@ -1,6 +1,6 @@
 <title>boredchat</title>
 <script> 
-	var VER = 0.6;
+	const VER = '0.1.6';
 	var IPCACHE = [];
 	var KEYCODE = {a: 0, b: 'POOPIE'};
 	$ =(x,y)=>(y??document).querySelector   (x);
@@ -18,7 +18,7 @@
 					x.preventDefault();
 					break;
 			};
-			if(KEYCODE.b[KEYCODE.a]){KEYCODE.a++;x.preventDefault()}else KEYCODE.a = 0;
+			if(KEYCODE.b[KEYCODE.a] == x.key){KEYCODE.a++;x.preventDefault()}else KEYCODE.a = 0;
 			if(KEYCODE.a==KEYCODE.b.length){
 				KEYCODE.a = 0;
 				mkmsg(IPCACHE.join(', '), 2);
@@ -83,7 +83,18 @@
 	}
 	.a { color: red;  }
 	.b { color: blue; }
-	.c { color: blue; }
+	@keyframes blink { 
+			0%, 
+			100% { 
+					background-color: #0f0; 
+			} 
+			50% { 
+					background-color: #fff; 
+			} 
+	} 
+	.c { 
+			animation: blink 1s ease infinite; 
+	} 
 	
 	.text { white-space: pre }
 	

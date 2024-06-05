@@ -195,8 +195,8 @@
 		sendDC(x);
 	}
 
-	sendDC=x=>{
-		dc.send(JSON.stringify({type: 'message',value: x}))
+	sendDC=(x,y)=>{
+		dc.send(JSON.stringify({type: y??'message',value: x}))
 	}
 
 	ondc=x=>{
@@ -205,6 +205,9 @@
 			case 'message':
 				mkmsg(y.value, 1);
 				playsnd('ping');
+				break;
+			case 'conn':
+				mkmsg('CONNECTED', 2);
 				break;
 		}
 	}
@@ -220,7 +223,7 @@
 	setupdc=()=>{
 		if(dc.id != null){
 			dc.onmessage = e => ondc(e.data);
-			dc.onopen = () => {setLoad(); mkmsg('CONNECTED', 2);};
+			dc.onopen = () => {setLoad(); mkmsg('CONNECTED', 2); sendDC('','conn')};
 			dc.onclose = e => discon();
 		}
 	}

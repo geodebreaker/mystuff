@@ -2,11 +2,11 @@
 <script> 
 	const VER = '0.1.7';
 	var IPCACHE = [];
-	var KEYCODE = {a: 0, b: 'POOPIE'};
+	var KEYCODE = {a: 0, b: 'PISSY'};
 	$ =(x,y)=>(y??document).querySelector   (x);
 	$$=(x,y)=>(y??document).querySelectorAll(x);
 	onerror=x=>{mkmsg('Error: "' + x + '", Please contact me.', 2)};
-	onkeypress=x=>{
+	onkeydown=x=>{
 		if(x.ctrlKey){
 			switch(x.key){
 				case '!':
@@ -82,9 +82,6 @@
     grid-area: top;
     user-select: text;
   }
-	.msg {
-		
-	}
 	.a { color: red;  }
 	.b { color: blue; }
 	@keyframes blink { 

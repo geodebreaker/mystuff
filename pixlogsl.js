@@ -1,11 +1,12 @@
 const webhook = process.env.WH;
 export default async function handler(req, res) {
+  const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
   await fetch(webhook, {
     method: 'POST',
-    body: JSON.stringify({ content: `${Date()}: \`${req.socket.remoteAddress}\`, \`${req.url}\`` }),
+    body: JSON.stringify({ content: `${Date().slice(0, -33)}: \`${ip}\`, \`${req.url}\`` }),
     headers: { 'Content-Type' : 'application/json' }
   }).then(
-    () => console.log('Success:', req.socket.remoteAddress, req.url),
+    () => console.log('Success:', ip, req.url),
     err => console.error('Fail:', err)
   );
   

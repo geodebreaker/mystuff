@@ -2,14 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "pixlog.js",
+      "src": "pixlogsl.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "pixlog.js"
+      "dest": "pixlogsl.js"
     }
   ]
 }

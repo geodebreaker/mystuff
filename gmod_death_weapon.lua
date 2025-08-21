@@ -27,19 +27,23 @@ end
 function SWEP:PrimaryAttack()
     if not IsFirstTimePredicted() then return end
     self:SetNextPrimaryFire(CurTime() + 0.01)
-    local b = {}
-    b.Num = 1
-    b.Src = self.Owner:GetShootPos()
-    b.Dir = self.Owner:GetAimVector()
-    b.Spread = Vector(0,0,0)
-    b.Tracer = 1
-    b.Force = 5
-    b.Damage = 100000
-    self.Owner:FireBullets(b)
+    if SERVER then
+        local owner = self:GetOwner()
+        if not IsValid(owner) then return end
+        local b = {}
+        b.Num = 1
+        b.Src = owner:GetShootPos()
+        b.Dir = owner:GetAimVector()
+        b.Spread = Vector(0,0,0)
+        b.Tracer = 1
+        b.Force = 5
+        b.Damage = 100000
+        owner:FireBullets(b)
+    end
     self:EmitSound("Weapon_Pistol.Single")
     self:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
-    self.Owner:MuzzleFlash()
-    self.Owner:SetAnimation(PLAYER_ATTACK1)
+    self:GetOwner():MuzzleFlash()
+    self:GetOwner():SetAnimation(PLAYER_ATTACK1)
 end
 
 function SWEP:SecondaryAttack()

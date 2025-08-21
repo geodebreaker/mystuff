@@ -3,7 +3,7 @@ if SERVER then
 end
 
 local SWEP = {}
-SWEP.Base = "weapon_pistol"
+SWEP.Base = "weapon_base"
 SWEP.PrintName = "death"
 
 SWEP.Primary = {}
@@ -15,6 +15,14 @@ SWEP.Secondary = {}
 SWEP.Secondary.ClipSize = -1
 SWEP.Secondary.DefaultClip = -1
 SWEP.Secondary.Automatic = true
+
+SWEP.UseHands = true
+SWEP.ViewModel = "models/weapons/c_pistol.mdl"
+SWEP.WorldModel = "models/weapons/w_pistol.mdl"
+
+function SWEP:Initialize()
+    self:SetHoldType("pistol")
+end
 
 function SWEP:PrimaryAttack()
     if not IsFirstTimePredicted() then return end

@@ -27,19 +27,17 @@ end
 function SWEP:PrimaryAttack()
     if not IsFirstTimePredicted() then return end
     self:SetNextPrimaryFire(CurTime() + 0.01)
-    if SERVER then
-        local owner = self:GetOwner()
-        if not IsValid(owner) then return end
-        local b = {}
-        b.Num = 1
-        b.Src = owner:GetShootPos()
-        b.Dir = owner:GetAimVector()
-        b.Spread = Vector(0,0,0)
-        b.Tracer = 1
-        b.Force = 5
-        b.Damage = 100000
-        owner:FireBullets(b)
-    end
+    local owner = self:GetOwner()
+    if not IsValid(owner) then return end
+    local b = {}
+    b.Num = 1
+    b.Src = owner:GetShootPos()
+    b.Dir = owner:GetAimVector()
+    b.Spread = Vector(0,0,0)
+    b.Tracer = 1
+    b.Force = 5
+    b.Damage = 100000
+    owner:FireBullets(b)
     self:EmitSound("Weapon_Pistol.Single")
     self:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
     self:GetOwner():MuzzleFlash()
@@ -67,7 +65,7 @@ function SWEP:Reload()
   if not IsFirstTimePredicted() then return end
   local owner = self:GetOwner()
   if not IsValid(owner) then return end
-  owner:SetHealth(2147483647)
+  owner:SetHealth(owner:Health() + 1000)
 end
 
 weapons.Register(SWEP,"weapon_death")

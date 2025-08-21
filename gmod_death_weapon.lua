@@ -1,3 +1,7 @@
+if SERVER then
+    AddCSLuaFile()
+end
+
 local SWEP = {}
 SWEP.Base = "weapon_base"
 SWEP.PrintName = "death"

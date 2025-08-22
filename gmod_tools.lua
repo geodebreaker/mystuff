@@ -83,10 +83,14 @@ if CLIENT then
   CreateClientConVar("cl_show_velocity", "0", true, false)
 end 
 
-hook.Add("SetupMove", "autobhop", function(ply, mv, cmd)
+hook.Add("SetupMove", "slidehop", function(ply, mv, cmd)
   if not IsValid(ply) then return end
+  local s = ply.slide
+  if not IsValid(s) then
+    s = ply.slide = {}
+  end
 
-  if not ply.log and ply:IsOnGround() and mv:KeyDown(IN_JUMP) then 
+  if not s.log and ply:IsOnGround() and mv:KeyDown(IN_JUMP) then 
     mv:SetButtons(bit.band(mv:GetButtons(), bit.bnot(IN_JUMP)))
     timer.Simple(0.01, function(p)
       if IsValid(p) then
@@ -99,34 +103,21 @@ hook.Add("SetupMove", "autobhop", function(ply, mv, cmd)
     end, ply)
   end
 
-  local function scv(k, v) if GetConVar(k):GetInt() != v then RunConsoleCommand(k, v) end end
-  scv("sv_maxspeed", 100000)
-  -- ply:SetJumpPower(200)
-
-  -- local p = ply:GetPos()
-  -- if p.y > 15000 then p.y = -15000 end
-  -- if p.x > 15000 then p.x = -15000 end
-  -- if p.y < -15000 then p.y = 15000 end
-  -- if p.x < -15000 then p.x = 15000 end
-  -- if p != ply:GetPos() then 
-  --   ply:SetPos(p)
-  -- end
-
-  if ply.ins and not ply:IsOnGround() then
-    mv:SetVelocity(Vector(ply.lv.x, ply.lv.y, mv:GetVelocity().z))
+  if s.ins and not ply:IsOnGround() then
+    mv:SetVelocity(Vector(s.lv.x, s.lv.y, mv:GetVelocity().z))
   end
 
-  if ply:KeyDown(IN_DUCK) and ply:IsOnGround() and ply.ldd >= 0 and mv:GetVelocity():Length() >= 380 then
-    mv:SetVelocity(mv:GetVelocity() + ply:EyeAngles():Forward() * ply.ldd * 100)
-    ply.ldd = ply.ldd - FrameTime()
-    ply.ins = true
+  if ply:KeyDown(IN_DUCK) and ply:IsOnGround() and s.ldd >= 0 and mv:GetVelocity():Length() >= 380 then
+    mv:SetVelocity(mv:GetVelocity() + ply:EyeAngles():Forward() * s.ldd * 100)
+    s.ldd = s.ldd - FrameTime()
+    s.ins = true
   else 
-    ply.ins = false
+    s.ins = false
   end
 
-  ply.log = ply:IsOnGround()
-  ply.lv = mv:GetVelocity()
-  if not ply:KeyDown(IN_DUCK) or not ply.log then 
-    ply.ldd = 1.5
+  s.log = ply:IsOnGround()
+  s.lv = mv:GetVelocity()
+  if not ply:KeyDown(IN_DUCK) or not s.log then 
+    s.ldd = 1.5
   end
 end)

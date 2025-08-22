@@ -86,9 +86,11 @@ end
 hook.Add("SetupMove", "slidehop", function(ply, mv, cmd)
   if not IsValid(ply) then return end
   local s = ply.slide
-  if not IsValid(s) then
+  if not s then
     ply.slide = {}
     s = ply.slide
+    s.ldd = 0
+    s.log = true
   end
 
   if not s.log and ply:IsOnGround() and mv:KeyDown(IN_JUMP) then 

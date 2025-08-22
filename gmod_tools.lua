@@ -116,7 +116,7 @@ hook.Add("SetupMove", "autobhop", function(ply, mv, cmd)
     mv:SetVelocity(Vector(ply.lv.x, ply.lv.y, mv:GetVelocity().z))
   end
 
-  if ply:KeyDown(IN_DUCK) and ply:IsOnGround() and ply.ldd >= 0 and ply:GetVelocity():Length() >= 480 then
+  if ply:KeyDown(IN_DUCK) and ply:IsOnGround() and ply.ldd >= 0 and mv:GetVelocity():Length() >= 380 then
     mv:SetVelocity(mv:GetVelocity() + ply:EyeAngles():Forward() * ply.ldd * 100)
     ply.ldd = ply.ldd - FrameTime()
     ply.ins = true

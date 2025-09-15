@@ -9,6 +9,7 @@
   addEventListener('keyup',e => {
     if (e.key == '~' && e.ctrlKey) try {
       let x = prompt();
+      if (!x) return;
       if (p) x = p.createScript(x);
       alert(JSON.stringify(eval(x)));
     } catch (e) {

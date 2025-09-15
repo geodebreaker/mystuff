@@ -1,8 +1,14 @@
 /// x.js
 (()=>{
+  let p;
+  try {
+    p = trustedTypes.createPolicy('pp')
+  } catch (e) {}
   addEventListener('keyup',e => {
     if (e.key == '~' && e.ctrlKey) try {
-      alert(JSON.stringify(eval(prompt())));
+      let x = prompt();
+      if (p) x = p.createScript(x);
+      alert(JSON.stringify(eval(x)));
     } catch (e) {
       alert(e);
     }

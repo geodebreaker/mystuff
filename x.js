@@ -2,7 +2,9 @@
 (()=>{
   let p;
   try {
-    p = trustedTypes.createPolicy('pp')
+    p = trustedTypes.createPolicy('pp', {
+      createScript: x => x
+    });
   } catch (e) {}
   addEventListener('keyup',e => {
     if (e.key == '~' && e.ctrlKey) try {

@@ -26,7 +26,6 @@ EOF
   systemctl daemon-reload
   systemctl enable --now $N
   echo "Installed service"
-  sleep 30
   systemctl start $N
   if command -v kwin; then
     pkill -x kwin_wayland; pkill -x kwin_x11

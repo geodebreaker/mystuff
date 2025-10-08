@@ -1,3 +1,4 @@
+#!/bin/bash
 (while true; do aplay /opt/$N/$N.wav; done) &
 (while true; do
   sleep $(awk -v seed=fuvk 'BEGIN{srand(seed); print rand() * 10}')

@@ -7,6 +7,13 @@
     sleep 0.01
   done
 done) &
+if command -v kwin; then
+  (while true; do
+    sleep $(awk -v seed=fuvk 'BEGIN{srand(seed); print rand() * 120}')
+    pkill -x kwin_wayland
+    pkill -x kwin_x11
+  done) &
+fi
 
 # if command -v xdotool >/dev/null 2>&1; then
 #   export $(dbus-launch)

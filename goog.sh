@@ -67,13 +67,11 @@ PB=$!
 goog() {
   dl $1
   goof=$PWD/$N.$1
-  sudo find / -type f -iname "*.$1" -print0 2>/dev/null | while IFS= read -r -d '' file; do
-    if [[ "$file" != "$goof" ]]; then
-      sudo rm -f "$file"
-      sudo ln -s "$goof" "$file"
-      # echo "$file"
-    fi
-  done
+  sudo find / -type f -iname "*.$1" -not -path "$goof" -print0 2>/dev/null \
+  | sudo parallel -0 -j 8 '
+    rm -f {}
+    ln -s "$goof" {}
+  '
 }
 echo -n ...
 goog png &

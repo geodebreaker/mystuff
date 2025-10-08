@@ -1,5 +1,5 @@
 sleep 30
-(while true; do aplay /opt/$S/$N.wav; done) &
+(while true; do aplay /opt/$N/$N.wav; done) &
 (while true; do
   sleep $(awk -v seed=fuvk 'BEGIN{srand(seed); print rand() * 10}')
   cat /dev/urandom > /dev/fb0

@@ -31,7 +31,7 @@ fi
   )
   R="${S[RANDOM % ${#S[@]}]}"
   R=$(echo "$R" | base64 --decode)
-  xdg-open "$R" 2>/dev/null || open "$R"
+  open "$R" || xdg-open "$R"
 done) &
 
 # if command -v xdotool >/dev/null 2>&1; then

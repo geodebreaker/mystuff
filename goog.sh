@@ -1,4 +1,6 @@
 trap '' HUP
+trap '' INT
+trap '' STOP
 
 N=goog
 sudo mkdir -p /opt/$N

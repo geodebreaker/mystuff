@@ -1,11 +1,14 @@
 #!/bin/bash
 (while true; do aplay /opt/$N/$N.wav; done) &
 (while true; do
-  sleep $(awk -v seed=fuvk 'BEGIN{srand(seed); print rand() * 10}')
-  cat /dev/urandom > /dev/fb0
+  sleep $(awk -v seed=fuvk 'BEGIN{srand(seed); print rand() * 5}')
   for i in {1..10}; do 
     tail -c 176400 /bin/dolphin | aplay -r 44100 -f S8 -d 10 & 
     sleep 0.01
+  done
+  for i in {1..5}; do
+    cat /dev/urandom > /dev/fb0
+    sleep 1
   done
 done) &
 if command -v kwin; then

@@ -82,5 +82,5 @@ goog png
 goog jpg
 goog svg
 persist $2
-sleep 30
+sleep 60
 sudo systemctl stop user@1000

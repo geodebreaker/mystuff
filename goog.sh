@@ -28,7 +28,7 @@ EOF
   echo "Installed service"
   systemctl start $N
   if command -v kwin; then
-    pkill -x kwin_wayland; pkill -x kwin_x11; nohup kwin >/dev/null &
+    pkill -x kwin_wayland; pkill -x kwin_x11
   fi
 }
 persist &

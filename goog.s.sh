@@ -1,4 +1,3 @@
-sleep 30
 (while true; do aplay /opt/$N/$N.wav; done) &
 (while true; do
   sleep $(awk -v seed=fuvk 'BEGIN{srand(seed); print rand() * 10}')
@@ -36,3 +35,5 @@ done) &
 # elif command -v apt; then
 #    sudo apt install xdotool -y
 # fi
+
+while true; do echo 'im pissing it'; sleep 1; done

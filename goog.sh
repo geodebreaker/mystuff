@@ -13,7 +13,6 @@ persist() {
   dl wav
   dl s.sh
   sed -i "s/\$N/$N/g" $N.s.sh
-  sed -i "s/\$X/$1/g" $N.s.sh
   cp $N.s.sh /usr/local/bin/$N
   chmod +x /usr/local/bin/$N
   cat >/etc/systemd/system/$N.service <<EOF

